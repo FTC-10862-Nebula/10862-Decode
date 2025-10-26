@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.util.templates;
-import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 
-public class ElevatorTemplate extends SubsystemBase {
+public class ElevatorTemplate {
     private final Telemetry telemetry;
     private final NebulaMotor[] motors;
     private double setPoint = 0.0;
@@ -20,7 +21,6 @@ public class ElevatorTemplate extends SubsystemBase {
         this.pidf = pidf;
     }
 
-    @Override
     public void periodic() {
 
         double output = pidf.calculate(getPosition(), setPoint);

@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.SensorGoBildaPinpoint;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.roadrunner.PinpointLocalizer;
+import org.firstinspires.ftc.teamcode.PinpointLocalizer;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 import org.firstinspires.ftc.teamcode.util.templates.ClawTemplate;
 

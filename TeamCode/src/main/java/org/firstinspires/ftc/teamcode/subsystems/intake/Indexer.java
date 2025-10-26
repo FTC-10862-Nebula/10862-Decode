@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake;
+import static com.arcrobotics.ftclib.util.Direction.FORWARD;
 
-import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaCRServo;
@@ -25,15 +26,15 @@ public enum Value {
                 new NebulaCRServo[]{
                         new NebulaCRServo(hw,
                                 "indexer1",
-                                Direction.FORWARD,
+                                FORWARD,
                                 isEnabled),
                         new NebulaCRServo(hw,
                                 "indexer2",
-                                Direction.FORWARD,
+                                FORWARD,
                                 isEnabled),
                         new NebulaCRServo(hw,
                                 "indexer3",
-                                Direction.FORWARD,
+                                FORWARD,
                                 isEnabled)
                 },
 

@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.util.templates;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystems.intake.PowerIntake;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 
 public class ShooterTemplate extends SubsystemBase {

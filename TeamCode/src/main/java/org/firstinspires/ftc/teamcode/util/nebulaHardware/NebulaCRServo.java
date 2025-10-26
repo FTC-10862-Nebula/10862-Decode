@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.util.nebulaHardware;
-import static com.qualcomm.robotcore.hardware.Servo.Direction.REVERSE;
-import static org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo.Direction.Forward;
-import static org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo.Direction.Reverse;
+
 import com.arcrobotics.ftclib.hardware.motors.CRServo;
 import com.arcrobotics.ftclib.util.Direction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
