@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.outtake;
 
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,10 +13,12 @@ import org.firstinspires.ftc.teamcode.util.templates.ActiveIntakeTemplate;
 public class ShooterScrim extends ActiveIntakeTemplate {
     private final Telemetry telemetry;
     private Value currentValue = Value.STOP; // default
+    private boolean isEnabled;
 
     public enum Value {
-        SHOOT(1.0),
-        OUTTAKE(-1.0),
+        SHOOT(1),
+        SHOOTAUTO(0.75),
+        OUTTAKE(-1),
         STOP(0.0);
 
         private final double power;
@@ -32,26 +35,30 @@ public class ShooterScrim extends ActiveIntakeTemplate {
         super(
                 new NebulaMotor[]{ new NebulaMotor(
                         hw, "shooter",
-                        DcMotorSimple.Direction.FORWARD,
+                        DcMotorSimple.Direction.REVERSE,
                         DcMotor.ZeroPowerBehavior.BRAKE,
-                        isEnabled)},
+                        true)},
                 telemetry);
         this.telemetry = telemetry;
+        new PIDFController(0.0045,0,0,0);
+        this.isEnabled = isEnabled;
     }
-
+    public void setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
+    }
     @Override
     public void periodic() {
         super.periodic();
-        // actually apply the value each cycle
-        setPower(currentValue.getPower());
+        if (isEnabled) setPower(currentValue.getPower());
+        else setPower(0);
         telemetry.addData("Shooter Mode", currentValue);
+        telemetry.addData("Shooter Enabled", isEnabled);
     }
 
     // instead of raw double, use your enum
     public void setValue(Value value) {
         this.currentValue = value;
     }
-
     public void stop() {
         setValue(Value.STOP);
     }

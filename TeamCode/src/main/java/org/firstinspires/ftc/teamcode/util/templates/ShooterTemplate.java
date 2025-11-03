@@ -46,6 +46,11 @@ public class ShooterTemplate extends SubsystemBase {
         telemetry.update();
     }
 
+//    protected void setPower(double power) {
+//        for (NebulaMotor motor : get()) {
+//            motor.setPower(power);
+//        }
+//    }
     public void setVelocity(double velocity) {
         this.targetVelocity = velocity;
     }
