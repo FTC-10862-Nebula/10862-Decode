@@ -48,7 +48,7 @@ public class TeleOpScrim extends MatchOpMode {
                 .whenReleased(new InstantCommand(()-> shooterScrim.setValue(ShooterScrim.Value.STOP)))
                 .whenReleased(new InstantCommand(() -> powerIntake.setValue(PowerIntake.Value.STOP)));
     }
-
+//nom
     @Override
     public void matchStart() {
         fieldCentricEnabled = true;
