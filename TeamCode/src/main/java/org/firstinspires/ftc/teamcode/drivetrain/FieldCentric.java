@@ -51,19 +51,17 @@ public class FieldCentric extends SubsystemBase {
 
     // Field-centric control
     public void centricField(double forward, double right, double rotate) {
-        double theta = Math.atan2(forward, right);
-        double r = Math.hypot(right, forward);
-
-        // Rotate based on the robot's current heading
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        theta = AngleUnit.normalizeRadians(theta - botHeading);
 
-        double newForward = r * Math.sin(theta);
-        double newRight = r * Math.cos(theta);
+        // Rotate joystick vector based on IMU heading
+        double rotX = right * Math.cos(botHeading) - forward * Math.sin(botHeading);
+        double rotY = right * Math.sin(botHeading) + forward * Math.cos(botHeading);
 
-        drive(newForward, newRight, rotate);
-       // newForward = -newForward;
+        // Correct order for drivetrain math
+        drive(rotY, rotX, rotate);
     }
+
+
 
 
     // Robot-relative control

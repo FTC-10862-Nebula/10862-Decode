@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.util.teleop;
 
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -34,13 +35,13 @@ public class TeleOpScrim extends MatchOpMode {
 
     @Override
     public void configureButtons() {
-        driverGamepad.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-                .whenPressed(new InstantCommand(() -> powerIntake.setValue(PowerIntake.Value.INTAKE)))
-                .whenReleased(new InstantCommand(() -> powerIntake.setValue(PowerIntake.Value.STOP)));
-
-        driverGamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(new InstantCommand(() -> shooterScrim.setValue(ShooterScrim.Value.SHOOT)))
-                .whenReleased(new InstantCommand(() -> shooterScrim.setValue(ShooterScrim.Value.STOP)));
+//        driverGamepad.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+//                .whenPressed(new InstantCommand(() -> powerIntake.setValue(PowerIntake.Value.INTAKE)))
+//                .whenReleased(new InstantCommand(() -> powerIntake.setValue(PowerIntake.Value.STOP)));
+//
+//        driverGamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+//                .whenPressed(new InstantCommand(() -> shooterScrim.setValue(ShooterScrim.Value.SHOOT)))
+//                .whenReleased(new InstantCommand(() -> shooterScrim.setValue(ShooterScrim.Value.STOP)));
 
         driverGamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
                 .whenPressed(new InstantCommand(() ->shooterScrim.setValue(ShooterScrim.Value.OUTTAKE)))
@@ -57,27 +58,32 @@ public class TeleOpScrim extends MatchOpMode {
     @Override
     public void matchLoop() {
 
-//        if (driverGamepad.getButton(GamepadKeys.Button.Y)) {
-//            powerIntake.setPower(1);
-//        } else {
-//            powerIntake.setPower(1);
- //       }
+
+        driverGamepad.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+                .whenPressed(new InstantCommand(() -> drive.setSlowMode(true)))
+                .whenReleased(new InstantCommand(() -> drive.setPowerScale(1.0)));
+
+        double leftTrigger = driverGamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        if (leftTrigger > 0.5) {
+            powerIntake.setPower(PowerIntake.Value.INTAKE.getPower());
+        } else { powerIntake.setPower(PowerIntake.Value.STOP.getPower());
+        }
+
         double rightTrigger = driverGamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
         if (rightTrigger > 0.5) {
-            drive.setSlowMode(true);
-
-        } else { drive.setPowerScale(1);
-        }
+           shooterScrim.setPower(ShooterScrim.Value.SHOOT.getPower());
+        } else
+        { shooterScrim.setPower(ShooterScrim.Value.STOP.getPower()); }
 
 
         if (fieldCentricEnabled) {
-            drive.drive(
+            drive.centricField(
                     -gamepad1.left_stick_y,  // forward
-                    -gamepad1.left_stick_x,   // strafe
+                  -gamepad1.left_stick_x,   // strafe
                     gamepad1.right_stick_x   // rotate
             );
         } else {
-            drive.centricField(
+            drive.drive(
                     -gamepad1.left_stick_y,
                     -gamepad1.left_stick_x,
                     gamepad1.right_stick_x
