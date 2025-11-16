@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.util.templates;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.subsystems.outtake.LockServo;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 
 public class ClawTemplate {
@@ -19,9 +20,9 @@ public class ClawTemplate {
             telemetry.addData("Claw Pos", servo.getPosition());
         }
     }
-    public void setSetPoint(double position) {
+    public void setSetPoint(LockServo.Value position) {
         for (NebulaServo servo : servos) {
-            servo.setPosition(position);
+            servo.setPosition(position.pos);
         }
     }
     public NebulaServo[] getServos() {

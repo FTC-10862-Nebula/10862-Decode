@@ -12,11 +12,11 @@ import org.firstinspires.ftc.teamcode.util.templates.ActiveIntakeTemplate;
 
 public class ShooterScrim extends ActiveIntakeTemplate {
     private final Telemetry telemetry;
-    private Value currentValue = Value.STOP; // default
+    private Value currentValue = Value.STOP;
     private boolean isEnabled;
 
     public enum Value {
-        SHOOT(1),
+        SHOOT(1.0),
         SHOOTAUTO(0.75),
         OUTTAKE(-1),
         STOP(0.0);
@@ -40,17 +40,19 @@ public class ShooterScrim extends ActiveIntakeTemplate {
                         true)},
                 telemetry);
         this.telemetry = telemetry;
-        new PIDFController(0.0045,0,0,0);
+        new PIDFController(0.00045,0,0,0);
         this.isEnabled = isEnabled;
     }
     public void setEnabled(boolean enabled) {
         this.isEnabled = enabled;
     }
     @Override
-    public void periodic() {
+    public void periodic()
+    {
         super.periodic();
         if (isEnabled) setPower(currentValue.getPower());
         else setPower(0);
+
         telemetry.addData("Shooter Mode", currentValue);
         telemetry.addData("Shooter Enabled", isEnabled);
     }
