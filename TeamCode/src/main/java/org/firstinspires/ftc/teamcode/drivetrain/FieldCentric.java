@@ -43,7 +43,6 @@ public class FieldCentric extends SubsystemBase {
     public void resetYaw() {
         imu.resetYaw();
     }
-
     public void setSlowMode(boolean slow) {
         powerScale = slow ? 0.5 : 1.0;
     }
