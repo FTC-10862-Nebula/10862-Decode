@@ -15,6 +15,8 @@ public class PowerIntake extends ActiveIntakeTemplate {
 
     public enum Value {
         INTAKE(1.0),
+
+        AUTOINTAKE(1.0),
         OUTTAKE(-1.0),
         STOP(0.0);
 

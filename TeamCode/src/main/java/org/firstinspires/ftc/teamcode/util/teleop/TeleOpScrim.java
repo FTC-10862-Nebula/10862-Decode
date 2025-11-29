@@ -19,7 +19,7 @@ public class TeleOpScrim extends MatchOpMode {
     private GamepadEx driverGamepad, operatorGamepad;
     private PowerIntake powerIntake;
     private ShooterScrim shooterScrim;
-    private LockServo lockServo;
+   // private LockServo lockServo;
     private FieldCentric drive;
     private boolean fieldCentricEnabled = true;
 
@@ -31,7 +31,7 @@ public class TeleOpScrim extends MatchOpMode {
         operatorGamepad = new GamepadEx(gamepad2);
         shooterScrim = new ShooterScrim(telemetry, hardwareMap, true);
         powerIntake = new PowerIntake(telemetry, hardwareMap, true);
-        lockServo = new LockServo(telemetry, hardwareMap,true);
+    //    lockServo = new LockServo(telemetry, hardwareMap,true);
 
     }
 
@@ -50,16 +50,18 @@ public class TeleOpScrim extends MatchOpMode {
                 .whenPressed(new InstantCommand(()-> powerIntake.setValue(PowerIntake.Value.OUTTAKE)))
                 .whenReleased(new InstantCommand(()-> shooterScrim.setValue(ShooterScrim.Value.STOP)))
                 .whenReleased(new InstantCommand(() -> powerIntake.setValue(PowerIntake.Value.STOP)));
-        driverGamepad.getGamepadButton(GamepadKeys.Button.B)
-                .whenPressed(new InstantCommand(() -> lockServo.setPosition(LockServo.Value.LOCK)));
-        driverGamepad.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(new InstantCommand(() -> lockServo.setPosition(LockServo.Value.REST)));
+//        driverGamepad.getGamepadButton(GamepadKeys.Button.B)
+//                .whenPressed(new InstantCommand(() -> lockServo.setPosition(LockServo.Value.LOCK)));
+//        driverGamepad.getGamepadButton(GamepadKeys.Button.A)
+//                .whenPressed(new InstantCommand(() -> lockServo.setPosition(LockServo.Value.REST)));
     }
 //nom
     @Override
     public void matchStart() {
         fieldCentricEnabled = true;
-        lockServo.setPosition(LockServo.Value.REST);
+        //lockServo.setPosition(LockServo.Value.REST);
+        powerIntake.setEnabled(true);
+        powerIntake.setValue(PowerIntake.Value.STOP);
     }
 
     @Override

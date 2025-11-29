@@ -45,23 +45,14 @@ public class Test extends LinearOpMode {
                 while (opModeIsActive() && System.currentTimeMillis() - start < 3000) {
                     shooterScrim.periodic();
                     telemetry.update(); }
-                    powerIntake.setValue(PowerIntake.Value.INTAKE);
+                    powerIntake.setValue(PowerIntake.Value.AUTOINTAKE);
                     start = System.currentTimeMillis();
                     while (opModeIsActive() && System.currentTimeMillis() - start < 1500) {
                         powerIntake.periodic();
                         telemetry.update();
-
-//                         .strafeTo(new Vector2d(-60,-20))
-
-
                     }
 
-
-
-
 // Intake 4 seconds
-
-
 
 // Stop both
             shooterScrim.setValue(ShooterScrim.Value.STOP);
@@ -73,7 +64,7 @@ public class Test extends LinearOpMode {
     void robotInit() {
         // Initialize the drive using the starting pose
         drive = new MecanumDrive(hardwareMap, beginPose);
-        powerIntake = new PowerIntake(telemetry,hardwareMap, true);
-        shooterScrim = new ShooterScrim(telemetry,hardwareMap,true);
+        powerIntake = new PowerIntake(telemetry, hardwareMap, true);
+        shooterScrim = new ShooterScrim(telemetry, hardwareMap,true);
     }
 }
