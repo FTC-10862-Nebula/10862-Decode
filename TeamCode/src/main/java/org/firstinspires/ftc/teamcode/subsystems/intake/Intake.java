@@ -7,27 +7,28 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 import org.firstinspires.ftc.teamcode.util.templates.ActiveIntakeTemplate;
 
-public class Indexer extends ActiveIntakeTemplate {
+public class Intake extends ActiveIntakeTemplate {
     private final Telemetry telemetry;
     private final boolean isEnabled;
-    
-    public enum IndexerValue {
-        SHOOT(1.0),
-        
-        HOLD(0.0),
+
+    public enum IntakeValue {
+        INTAKE(1.0),
+
+        AUTOINTAKE(1.0),
+        OUTTAKE(-1.0),
         STOP(0.0);
-        
+
         private final double power;
-        IndexerValue(double power) {
+        IntakeValue(double power) {
             this.power = power;
         }
-        
+
         public double getPower() {
             return power;
         }
     }
-    
-    public Indexer(Telemetry telemetry, HardwareMap hw, boolean isEnabled) {
+
+    public Intake(Telemetry telemetry, HardwareMap hw, boolean isEnabled) {
         super(
             new NebulaMotor[]{ new NebulaMotor(
                 hw, "intake",
@@ -37,16 +38,16 @@ public class Indexer extends ActiveIntakeTemplate {
             telemetry);
         this.telemetry = telemetry;
         this.isEnabled = isEnabled;
-        setValue(IndexerValue.STOP);
+        setValue(IntakeValue.STOP);
     }
-    
+
     @Override
     public void periodic() {
         super.periodic();
-        telemetry.addData("Indexer Enabled", isEnabled);
+        telemetry.addData("Intake Enabled", isEnabled);
     }
-    
-    public void setValue(IndexerValue intakeValue) {
+
+    public void setValue(IntakeValue intakeValue) {
         setPower(intakeValue.power);
     }
 }

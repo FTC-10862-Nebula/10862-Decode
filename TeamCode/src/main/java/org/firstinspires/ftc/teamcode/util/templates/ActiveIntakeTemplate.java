@@ -12,8 +12,8 @@ public class ActiveIntakeTemplate extends SubsystemBase {
     private double currentPower = 0.0;
 
     public ActiveIntakeTemplate(
-            NebulaMotor[] motors,
-            Telemetry telemetry
+        NebulaMotor[] motors,
+        Telemetry telemetry
     ) {
         this.motors = motors;
         this.telemetry = telemetry;
@@ -30,7 +30,7 @@ public class ActiveIntakeTemplate extends SubsystemBase {
             motor.setPower(power);
         }
     }
-        public NebulaMotor[] getMotors(){
+    public NebulaMotor[] getMotors(){
             return motors;
     }
 

@@ -7,7 +7,7 @@ import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 
-import org.firstinspires.ftc.teamcode.subsystems.intake.PowerIntake;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ public abstract class MatchOpMode extends CommandOpMode {
     protected FtcDashboard dashboard = FtcDashboard.getInstance();
     public static Map<String, Object> telemetryList = new HashMap<>();
     public static Canvas canvas = new Canvas();
-    public static PowerIntake powerIntake;
+    public static Intake intake;
 
 
     @Override
