@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drivetrain;
+package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
@@ -32,10 +32,12 @@ import com.acmerobotics.roadrunner.ftc.LynxFirmware;
 import com.acmerobotics.roadrunner.ftc.OverflowEncoder;
 import com.acmerobotics.roadrunner.ftc.PositionVelocityPair;
 import com.acmerobotics.roadrunner.ftc.RawEncoder;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
@@ -55,7 +57,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 @Config
-public final class MecanumDrive {
+public class MecDrive extends SubsystemBase {
     public Pose2d pose;
 
     public static class Params {
@@ -71,9 +73,9 @@ public final class MecanumDrive {
         public double trackWidthTicks = 0;
 
         // feedforward parameters (in tick units)
-        public double kS = 0;
-        public double kV = 0;
-        public double kA = 0;
+        public double kS = 0.06;
+        public double kV = 0.0105;
+        public double kA = 0.0023;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -133,10 +135,10 @@ public final class MecanumDrive {
         private Pose2d pose;
 
         public DriveLocalizer(Pose2d pose) {
-            leftFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftFront)); //leftFront
-            leftBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.leftBack)); //leftBack
-            rightBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightBack)); //rightBack
-            rightFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightFront)); //rightFront
+            leftFront = new OverflowEncoder(new RawEncoder(MecDrive.this.leftFront)); //leftFront
+            leftBack = new OverflowEncoder(new RawEncoder(MecDrive.this.leftBack)); //leftBack
+            rightBack = new OverflowEncoder(new RawEncoder(MecDrive.this.rightBack)); //rightBack
+            rightFront = new OverflowEncoder(new RawEncoder(MecDrive.this.rightFront)); //rightFront
 
             imu = lazyImu.get();
 
@@ -219,7 +221,7 @@ public final class MecanumDrive {
         }
     }
 
-    public MecanumDrive() {
+    public MecDrive() {
         LynxFirmware.throwIfModulesAreOutdated(hardwareMap);
 
         for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
@@ -237,9 +239,11 @@ public final class MecanumDrive {
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // TODO: reverse motor directions if needed
-        //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        
+        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightBack.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
 
         lazyImu = new LazyHardwareMapImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
                 PARAMS.logoFacingDirection, PARAMS.usbFacingDirection));
@@ -496,5 +500,39 @@ public final class MecanumDrive {
                 defaultTurnConstraints,
                 defaultVelConstraint, defaultAccelConstraint
         );
+    }
+    
+    public void resetYaw(){
+        lazyImu.get().resetYaw();
+    }
+    
+    public void driveFieldRelative(double forward, double right, double rotate) {
+        double theta = Math.atan2(forward, right);
+        double r = Math.hypot(right, forward);
+        
+        // Rotate by robot heading
+        theta = AngleUnit.normalizeRadians(theta - lazyImu.get().getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+        
+        double newForward = r * Math.sin(theta);
+        double newRight = r * Math.cos(theta);
+        
+        driveRobotCentric(newForward, newRight, rotate);
+    }
+    
+    public void driveRobotCentric(double forward, double right, double rotate) {
+        double frontLeftPower = forward + right + rotate;
+        double frontRightPower = forward - right - rotate;
+        double backRightPower = forward + right - rotate;
+        double backLeftPower = forward - right + rotate;
+        
+        double max = Math.max(1.0,
+            Math.max(Math.abs(frontLeftPower),
+                Math.max(Math.abs(frontRightPower),
+                    Math.max(Math.abs(backLeftPower), Math.abs(backRightPower)))));
+        
+        leftFront.setPower(frontLeftPower / max);
+        rightFront.setPower(frontRightPower / max);
+        leftBack.setPower(backLeftPower / max);
+        rightBack.setPower(backRightPower / max);
     }
 }
