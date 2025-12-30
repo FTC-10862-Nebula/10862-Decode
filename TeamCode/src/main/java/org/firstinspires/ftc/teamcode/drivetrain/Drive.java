@@ -54,10 +54,10 @@ public class Drive extends SubsystemBase {
         double newForward = r * Math.sin(theta);
         double newRight = r * Math.cos(theta);
 
-        drive(newForward, newRight, rotate);
+        driveRobotCentric(newForward, newRight, rotate);
     }
 
-    public void drive(double forward, double right, double rotate) {
+    public void driveRobotCentric(double forward, double right, double rotate) {
         double frontLeftPower = forward + right + rotate;
         double frontRightPower = forward - right - rotate;
         double backRightPower = forward + right - rotate;
