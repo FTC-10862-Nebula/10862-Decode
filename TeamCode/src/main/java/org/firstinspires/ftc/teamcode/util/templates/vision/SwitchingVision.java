@@ -51,6 +51,7 @@ import java.util.List;
  */
 @TeleOp(name = "Concept: AprilTag Switchable Cameras", group = "Concept")
 @Disabled
+@Deprecated
 public class SwitchingVision extends LinearOpMode {
 
     /*
