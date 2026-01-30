@@ -7,16 +7,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 import org.firstinspires.ftc.teamcode.util.templates.ActiveIntakeTemplate;
-
 public class PowerIntake extends ActiveIntakeTemplate {
     private final Telemetry telemetry;
-    private Value currentValue = Value.STOP; // default
+    private Value currentValue = Value.STOP;
     private boolean isEnabled;
 
     public enum Value {
         INTAKE(1.0),
 
-        AUTOINTAKE(1.0),
+        AUTOINTAKE(0.75),
         OUTTAKE(-1.0),
         STOP(0.0);
 
@@ -32,14 +31,20 @@ public class PowerIntake extends ActiveIntakeTemplate {
 
     public PowerIntake(Telemetry telemetry, HardwareMap hw, boolean isEnabled) {
         super(
-                new NebulaMotor[]{ new NebulaMotor(
-                        hw, "intake",
-                        DcMotorSimple.Direction.REVERSE,
-                        DcMotor.ZeroPowerBehavior.BRAKE,
-                        true)},
-                telemetry);
+                new NebulaMotor[]{
+                        new NebulaMotor(hw, "intake",
+                                DcMotorSimple.Direction.FORWARD,
+                                DcMotor.ZeroPowerBehavior.BRAKE,
+                                true),
+                        new NebulaMotor(hw, "intake2",
+                                DcMotorSimple.Direction.REVERSE,
+                                DcMotor.ZeroPowerBehavior.BRAKE,
+                                true)
+                },
+                telemetry
+        );
+
         this.telemetry = telemetry;
-        new PIDFController(0.0045,0,0,0);
         this.isEnabled = isEnabled;
     }
 

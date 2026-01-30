@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake;
 import static com.arcrobotics.ftclib.util.Direction.FORWARD;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaCRServo;
 import org.firstinspires.ftc.teamcode.util.templates.IndexerTemplate;
-
+@Deprecated
 public class Indexer extends IndexerTemplate {
     private NebulaCRServo[] CRservos;
     public Telemetry telemetry;

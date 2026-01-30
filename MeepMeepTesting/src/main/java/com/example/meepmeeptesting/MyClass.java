@@ -15,10 +15,10 @@ public class MyClass {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-50, -46, Math.toRadians(45)))
-                .lineToX(-40)
-                                .strafeTo(new Vector2d(-60,-20))
-                               // .turn(Math.toRadians(-30))
+//        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-50, -46, Math.toRadians(45)))
+//                .lineToX(-40)
+//                                .strafeTo(new Vector2d(-60,-20))
+//                               // .turn(Math.toRadians(-30))
 //                .turn(Math.toRadians(90))
 //                .lineToY(30)
 //                .turn(Math.toRadians(90))
@@ -26,7 +26,7 @@ public class MyClass {
 //                .turn(Math.toRadians(90))
 //                .lineToY(0)
 //                .turn(Math.toRadians(90))
-                .build());
+                //.build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_JUICE_LIGHT)
                 .setDarkMode(true)

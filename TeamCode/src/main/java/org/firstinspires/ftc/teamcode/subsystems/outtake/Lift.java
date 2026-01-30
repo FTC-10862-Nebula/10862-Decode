@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaMotor;
 import org.firstinspires.ftc.teamcode.util.templates.ElevatorTemplate;
-
+@Deprecated
 public class Lift extends ElevatorTemplate {
     private final Telemetry telemetry;
     public enum Value {

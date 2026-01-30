@@ -18,7 +18,7 @@ public class motorTest extends OpMode {
     public void init() {
 //        motor1 = hardwareMap.get(DcMotorEx.class, "intake");
 //        motor1.setDirection(DcMotorSimple.Direction.REVERSE);
-        motor2 = hardwareMap.get(DcMotorEx.class, "shooter");
+        motor2 = hardwareMap.get(DcMotorEx.class, "intake2");
         motor2.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }

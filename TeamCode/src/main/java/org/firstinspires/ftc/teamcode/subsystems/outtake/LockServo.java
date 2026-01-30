@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems.outtake;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.nebulaHardware.NebulaServo;
 import org.firstinspires.ftc.teamcode.util.templates.ClawTemplate;
-
+@Deprecated
 public class LockServo extends ClawTemplate {
     public Telemetry telemetry;
     public enum Value {

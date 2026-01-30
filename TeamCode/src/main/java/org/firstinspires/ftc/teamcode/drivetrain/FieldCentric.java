@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.drivetrain;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -24,8 +26,8 @@ public class FieldCentric extends SubsystemBase {
         // Motor directions
         frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -35,7 +37,7 @@ public class FieldCentric extends SubsystemBase {
         imu = hardwareMap.get(IMU.class, "imu");
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
         );
         imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
@@ -47,39 +49,38 @@ public class FieldCentric extends SubsystemBase {
         powerScale = slow ? 0.5 : 1.0;
     }
 
-    public void setPowerScale(double powerScale) {
+   public void setPowerScale(double powerScale) {
         this.powerScale = powerScale;
     }
 
     // Field-centric control
     public void centricField(double forward, double right, double rotate) {
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double botHeading = -imu.getRobotYawPitchRollAngles()
+                .getYaw(AngleUnit.RADIANS);
 
-        // Rotate joystick vector based on IMU heading
-        double rotX = right * Math.cos(botHeading) - forward * Math.sin(botHeading);
+        double rotX = -(right * Math.cos(botHeading) - forward * Math.sin(botHeading));
         double rotY = right * Math.sin(botHeading) + forward * Math.cos(botHeading);
 
-        // Correct order for drivetrain math
         drive(rotY, rotX, rotate);
     }
 
 
 
-
     // Robot-relative control
     public void drive(double forward, double right, double rotate) {
-        double frontLeftPower = forward - right + rotate;
-        double frontRightPower = forward + right - rotate;
-        double backLeftPower = forward + right + rotate;
-        double backRightPower = forward - right - rotate;
+        double frontLeftPower  = forward + right + rotate;
+        double frontRightPower = forward - right - rotate;
+        double backLeftPower   = forward - right + rotate;
+        double backRightPower  = forward + right - rotate;
 
-        double max = Math.max(1.0, Math.max(Math.abs(frontLeftPower),
-                Math.max(Math.abs(frontRightPower),
-                        Math.max(Math.abs(backLeftPower), Math.abs(backRightPower)))));
+        double max = Math.max(1.0,
+                Math.max(Math.abs(frontLeftPower),
+                        Math.max(Math.abs(frontRightPower),
+                                Math.max(Math.abs(backLeftPower), Math.abs(backRightPower)))));
 
-        frontLeftDrive.setPower((frontLeftPower / max) * powerScale);
-        frontRightDrive.setPower((frontRightPower / max) * powerScale);
-        backLeftDrive.setPower((backLeftPower / max) * powerScale);
-        backRightDrive.setPower((backRightPower / max) * powerScale);
+        frontLeftDrive.setPower(frontLeftPower / max * powerScale);
+        frontRightDrive.setPower(frontRightPower / max * powerScale);
+        backLeftDrive.setPower(backLeftPower / max * powerScale);
+        backRightDrive.setPower(backRightPower / max * powerScale);
     }
 }

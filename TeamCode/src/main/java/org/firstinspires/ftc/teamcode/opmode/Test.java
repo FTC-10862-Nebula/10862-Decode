@@ -12,14 +12,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.intake.PowerIntake;
-import org.firstinspires.ftc.teamcode.subsystems.outtake.ShooterScrim;
+//import org.firstinspires.ftc.teamcode.subsystems.outtake.ShooterScrim;
 
 @Autonomous(name = "Test", group = "Auto")
 public class Test extends LinearOpMode {
     private final Pose2d beginPose = new Pose2d(-50, -46, Math.toRadians(45));
     private final Pose2d parkPose = new Pose2d(-60,-20,Math.toRadians(45));
     MecanumDrive drive;
-    ShooterScrim shooterScrim;
+    //ShooterScrim shooterScrim;
     PowerIntake powerIntake;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,25 +29,25 @@ public class Test extends LinearOpMode {
 
         waitForStart();
         // Enable subsystems after start
-        shooterScrim.setEnabled(true);
+     //   shooterScrim.setEnabled(true);
         powerIntake.setEnabled(true);
 
         if (opModeIsActive()) {
             // Drive forward to target
             Action toGoal = drive.actionBuilder(beginPose)
-                    .lineToX(-20)
-                    .strafeTo(new Vector2d(-60,-20))
+                    .lineToX(-32)
+                  //  .strafeTo(new Vector2d(-60,-20))
                     .build();
             Actions.runBlocking(toGoal);
 
-            shooterScrim.setValue(ShooterScrim.Value.SHOOTAUTO);
+          //  shooterScrim.setValue(ShooterScrim.Value.SHOOTAUTO);
                 long start = System.currentTimeMillis();
-                while (opModeIsActive() && System.currentTimeMillis() - start < 3000) {
-                    shooterScrim.periodic();
+                while (opModeIsActive() && System.currentTimeMillis() - start < 5000) {
+                   // shooterScrim.periodic();
                     telemetry.update(); }
                     powerIntake.setValue(PowerIntake.Value.AUTOINTAKE);
                     start = System.currentTimeMillis();
-                    while (opModeIsActive() && System.currentTimeMillis() - start < 1500) {
+                    while (opModeIsActive() && System.currentTimeMillis() - start < 2000) {
                         powerIntake.periodic();
                         telemetry.update();
                     }
@@ -55,9 +55,9 @@ public class Test extends LinearOpMode {
 // Intake 4 seconds
 
 // Stop both
-            shooterScrim.setValue(ShooterScrim.Value.STOP);
+          //  shooterScrim.setValue(ShooterScrim.Value.STOP);
             powerIntake.setValue(PowerIntake.Value.STOP);
-            shooterScrim.periodic();
+           // shooterScrim.periodic();
             powerIntake.periodic();
         }
     }
@@ -65,6 +65,6 @@ public class Test extends LinearOpMode {
         // Initialize the drive using the starting pose
         drive = new MecanumDrive(hardwareMap, beginPose);
         powerIntake = new PowerIntake(telemetry, hardwareMap, true);
-        shooterScrim = new ShooterScrim(telemetry, hardwareMap,true);
+       // shooterScrim = new ShooterScrim(telemetry, hardwareMap,true);
     }
 }
